@@ -1,2 +1,4 @@
 manpages
 man-db
+doc-base
+doc-debian
