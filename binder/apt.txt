@@ -1,1 +1,2 @@
 manpages
+man-db
