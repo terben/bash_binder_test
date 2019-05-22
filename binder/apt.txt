@@ -1,0 +1,4 @@
+manpages
+man-db
+coreutils
+
