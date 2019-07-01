@@ -1,7 +1,0 @@
-#!/bin/bash
-
-rm /etc/dpkg/dpkg.cfg.d/excludes
-
-apt-get update && \
-    dpkg -l | grep ^ii | cut -d' ' -f3 | xargs apt-get install -y --reinstall && \
-    rm -r /var/lib/apt/lists/*
