@@ -109,7 +109,7 @@ RUN sed -i '/path-exclude=\/usr\/share\/man\/*/c\#path-exclude=\/usr\/share\/man
   apt-get install --yes --no-install-recommends man manpages-posix && \
   dpkg -l | grep ^ii | cut -d' ' -f3 | xargs apt-get install -y --reinstall && \
   apt-get -qq purge && \
-  apt-get -qq clean 
+  apt-get -qq clean
 
 
 # Run assemble scripts! These will actually build the specification
@@ -128,11 +128,11 @@ RUN wget https://astro.uni-bonn.de/~ocordes/repo2docker/repo2docker-entrypoint -
 RUN chmod 755 /usr/local/bin/repo2docker-entrypoint
 
 USER ${NB_USER}
-RUN conda env update -p ${NB_PYTHON_PREFIX} -f "environment.yml" && \
-conda clean -tipsy && \
-conda list -p ${NB_PYTHON_PREFIX} && \
-rm -rf /srv/conda/pkgs
-
+#RUN conda env update -p ${NB_PYTHON_PREFIX} -f "environment.yml" && \
+#conda clean -tipsy && \
+#conda list -p ${NB_PYTHON_PREFIX} && \
+#rm -rf /srv/conda/pkgs
+RUN pip install --no-cache-dir -r requirements.txt
 
 # This is an image from ocordes
 
@@ -143,4 +143,3 @@ ENTRYPOINT ["/usr/local/bin/repo2docker-entrypoint"]
 
 # Specify the default command to run
 CMD ["jupyter", "notebook", "--ip", "0.0.0.0"]
-
