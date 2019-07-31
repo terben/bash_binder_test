@@ -57,17 +57,23 @@ ENV NPM_CONFIG_GLOBALCONFIG ${NPM_DIR}/npmrc
 ENV CONDA_DIR ${APP_BASE}/conda
 ENV NB_PYTHON_PREFIX ${CONDA_DIR}/envs/notebook
 ENV KERNEL_PYTHON_PREFIX ${NB_PYTHON_PREFIX}
+
 # Special case PATH
 ENV PATH ${NB_PYTHON_PREFIX}/bin:${CONDA_DIR}/bin:${NPM_DIR}/bin:${PATH}
-# If scripts required during build are present, copy them
 
-COPY ${HOME}/binder/install-miniconda.bash /tmp/install-miniconda.bash
+# Allow target path repo is cloned to be configurable
+ARG REPO_DIR=${HOME}
+ENV REPO_DIR ${REPO_DIR}
+WORKDIR ${REPO_DIR}
+
+# If scripts required during build are present, copy them
+COPY ${REPO_DIR}/binder/install-miniconda.bash /tmp/install-miniconda.bash
 #RUN wget https://astro.uni-bonn.de/~ocordes/repo2docker/install-miniconda.bash -O /tmp/install-miniconda.bash
 
-COPY ${HOME}/binder/activate-conda.sh /etc/profile.d/activate-conda.sh
+COPY ${REPO_DIR}/binder/activate-conda.sh /etc/profile.d/activate-conda.sh
 #RUN wget https://astro.uni-bonn.de/~ocordes/repo2docker/activate-conda.sh -O /etc/profile.d/activate-conda.sh
 
-COPY ${HOME}/binder/environment.frozen.yml /tmp/environment.yml
+COPY ${REPO_DIR}/binder/environment.frozen.yml /tmp/environment.yml
 #RUN wget https://astro.uni-bonn.de/~ocordes/repo2docker/environment.frozen.yml -O /tmp/environment.yml
 
 RUN mkdir -p ${NPM_DIR} && \
@@ -83,9 +89,9 @@ rm /tmp/install-miniconda.bash /tmp/environment.yml
 
 
 # Allow target path repo is cloned to be configurable
-ARG REPO_DIR=${HOME}
-ENV REPO_DIR ${REPO_DIR}
-WORKDIR ${REPO_DIR}
+#ARG REPO_DIR=${HOME}
+#ENV REPO_DIR ${REPO_DIR}
+#WORKDIR ${REPO_DIR}
 
 # We want to allow two things:
 #   1. If there's a .local/bin directory in the repo, things there
@@ -114,8 +120,8 @@ RUN sed -i '/path-exclude=\/usr\/share\/man\/*/c\#path-exclude=\/usr\/share\/man
 
 # Run assemble scripts! These will actually build the specification
 # in the repository into the image.
-RUN test -f ${HOME}/binder/apt.txt && apt-get -qq update && \
-apt-get install --yes --no-install-recommends `cat ${HOME}/binder/apt.txt` && \
+RUN test -f ${REPO_DIR}/binder/apt.txt && apt-get -qq update && \
+apt-get install --yes --no-install-recommends `cat ${REPO_DIR}/binder/apt.txt` && \
 apt-get -qq purge && \
 apt-get -qq clean && \
 rm -rf /var/lib/apt/lists/*
