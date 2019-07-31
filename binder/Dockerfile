@@ -123,11 +123,11 @@ COPY binder/repo2docker-entrypoint /usr/local/bin/repo2docker-entrypoint
 RUN chmod 755 /usr/local/bin/repo2docker-entrypoint
 
 USER ${NB_USER}
-RUN test -f binder/environment.yml && \
-  conda env update -p ${NB_PYTHON_PREFIX} -f "binder/environment.yml" && \
-  conda clean -tipsy && \
-  conda list -p ${NB_PYTHON_PREFIX} && \
-  rm -rf /srv/conda/pkgs
+#RUN test -f binder/environment.yml && \
+#  conda env update -p ${NB_PYTHON_PREFIX} -f "binder/environment.yml" && \
+#  conda clean -tipsy && \
+#  conda list -p ${NB_PYTHON_PREFIX} && \
+#  rm -rf /srv/conda/pkgs
 
 RUN test -f binder/requirements.txt && \
   pip install --no-cache-dir -r binder/requirements.txt
