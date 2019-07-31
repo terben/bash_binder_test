@@ -61,14 +61,14 @@ ENV KERNEL_PYTHON_PREFIX ${NB_PYTHON_PREFIX}
 ENV PATH ${NB_PYTHON_PREFIX}/bin:${CONDA_DIR}/bin:${NPM_DIR}/bin:${PATH}
 # If scripts required during build are present, copy them
 
-#COPY conda/install-miniconda.bash /tmp/install-miniconda.bash
-RUN wget https://astro.uni-bonn.de/~ocordes/repo2docker/install-miniconda.bash -O /tmp/install-miniconda.bash
+COPY ${HOME}/binder/install-miniconda.bash /tmp/install-miniconda.bash
+#RUN wget https://astro.uni-bonn.de/~ocordes/repo2docker/install-miniconda.bash -O /tmp/install-miniconda.bash
 
-#COPY conda/activate-conda.sh /etc/profile.d/activate-conda.sh
-RUN wget https://astro.uni-bonn.de/~ocordes/repo2docker/activate-conda.sh -O /etc/profile.d/activate-conda.sh
+COPY ${HOME}/binder/activate-conda.sh /etc/profile.d/activate-conda.sh
+#RUN wget https://astro.uni-bonn.de/~ocordes/repo2docker/activate-conda.sh -O /etc/profile.d/activate-conda.sh
 
-#COPY conda/environment.frozen.yml /tmp/environment.yml
-RUN wget https://astro.uni-bonn.de/~ocordes/repo2docker/environment.frozen.yml -O /tmp/environment.yml
+COPY ${HOME}/binder/environment.frozen.yml /tmp/environment.yml
+#RUN wget https://astro.uni-bonn.de/~ocordes/repo2docker/environment.frozen.yml -O /tmp/environment.yml
 
 RUN mkdir -p ${NPM_DIR} && \
 chown -R ${NB_USER}:${NB_USER} ${NPM_DIR}
@@ -114,8 +114,8 @@ RUN sed -i '/path-exclude=\/usr\/share\/man\/*/c\#path-exclude=\/usr\/share\/man
 
 # Run assemble scripts! These will actually build the specification
 # in the repository into the image.
-RUN test -f ${REPO_DIR}/binder/apt.txt && apt-get -qq update && \
-apt-get install --yes --no-install-recommends `cat ${REPO_DIR}/binder/apt.txt` && \
+RUN test -f ${HOME}/binder/apt.txt && apt-get -qq update && \
+apt-get install --yes --no-install-recommends `cat ${HOME}/binder/apt.txt` && \
 apt-get -qq purge && \
 apt-get -qq clean && \
 rm -rf /var/lib/apt/lists/*
