@@ -1,3 +1,11 @@
+# Dockerfile for a Jupyter notebook with bash-kernel.
+# We needed to set up a specific Dockerfile because
+# the standard binderhub procedures lead to a container that
+# does not allow to include man-pages of Unix-commands.
+# Those we want to have.
+
+# Dockerfile maintained by Oliver Cordes & Thomas Erben
+
 FROM buildpack-deps:bionic
 
 # avoid prompts from apt
@@ -123,16 +131,11 @@ COPY binder/repo2docker-entrypoint /usr/local/bin/repo2docker-entrypoint
 RUN chmod 755 /usr/local/bin/repo2docker-entrypoint
 
 USER ${NB_USER}
-#RUN test -f binder/environment.yml && \
-#  conda env update -p ${NB_PYTHON_PREFIX} -f "binder/environment.yml" && \
-#  conda clean -tipsy && \
-#  conda list -p ${NB_PYTHON_PREFIX} && \
-#  rm -rf /srv/conda/pkgs
 
+# setup the bash_calysto kernel. It is only available via pip
+# but not from conda:
 RUN test -f binder/requirements.txt && \
   pip install --no-cache-dir -r binder/requirements.txt
-
-# This is an image from ocordes
 
 # We always want containers to run as non-root
 USER ${NB_USER}
