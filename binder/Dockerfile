@@ -114,8 +114,8 @@ RUN sed -i '/path-exclude=\/usr\/share\/man\/*/c\#path-exclude=\/usr\/share\/man
 
 # Run assemble scripts! These will actually build the specification
 # in the repository into the image.
-RUN test -f ${REPO_DIR}/apt.txt && apt-get -qq update && \
-apt-get install --yes --no-install-recommends `cat ${REPO_DIR}/apt.txt` && \
+RUN test -f ${REPO_DIR}/binder/apt.txt && apt-get -qq update && \
+apt-get install --yes --no-install-recommends `cat ${REPO_DIR}/binder/apt.txt` && \
 apt-get -qq purge && \
 apt-get -qq clean && \
 rm -rf /var/lib/apt/lists/*
@@ -132,7 +132,7 @@ USER ${NB_USER}
 #conda clean -tipsy && \
 #conda list -p ${NB_PYTHON_PREFIX} && \
 #rm -rf /srv/conda/pkgs
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r binder/requirements.txt
 
 # This is an image from ocordes
 
