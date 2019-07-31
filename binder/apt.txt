@@ -2,3 +2,4 @@ manpages
 man-db
 coreutils
 lsb-release
+lsb-core
