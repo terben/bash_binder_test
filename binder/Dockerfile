@@ -67,7 +67,7 @@ ENV REPO_DIR ${REPO_DIR}
 WORKDIR ${REPO_DIR}
 
 # If scripts required during build are present, copy them
-COPY ${REPO_DIR}/binder/install-miniconda.bash /tmp/install-miniconda.bash
+COPY binder/install-miniconda.bash /tmp/install-miniconda.bash
 #RUN wget https://astro.uni-bonn.de/~ocordes/repo2docker/install-miniconda.bash -O /tmp/install-miniconda.bash
 
 COPY ${REPO_DIR}/binder/activate-conda.sh /etc/profile.d/activate-conda.sh
