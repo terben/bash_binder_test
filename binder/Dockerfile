@@ -140,6 +140,9 @@ RUN test -f binder/requirements.txt && \
 # We always want containers to run as non-root
 USER ${NB_USER}
 
+# remove the binder-folder within the docker:
+RUN rm -rf binder
+
 ENTRYPOINT ["/usr/local/bin/repo2docker-entrypoint"]
 
 # Specify the default command to run
