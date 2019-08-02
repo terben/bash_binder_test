@@ -28,6 +28,11 @@ ENV LANGUAGE en_US.UTF-8
 # Use bash as default shell, rather than sh
 ENV SHELL /bin/bash
 
+# set TERM to xterm to be able to get colored-ls output
+# within the Jupyter notebook. If we do not do this, the
+# variable is set to 'dumb'.
+ENV TERM xterm
+
 # Set up user
 ARG NB_USER
 ARG NB_UID
