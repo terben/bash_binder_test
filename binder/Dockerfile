@@ -28,15 +28,11 @@ ENV LANGUAGE en_US.UTF-8
 # Use bash as default shell, rather than sh
 ENV SHELL /bin/bash
 
-# set TERM to xterm to be able to get colored-ls output
-# within the Jupyter notebook. If we do not do this, the
-# variable is set to 'dumb'.
-ENV TERM xterm
-
 # Set up user
 ARG NB_USER
 ARG NB_UID
-ENV USER ${NB_USER}
+#ENV USER ${NB_USER}
+ENV USER thomas
 ENV HOME /home/${NB_USER}
 
 RUN adduser --disabled-password \
@@ -129,18 +125,15 @@ RUN test -f binder/apt.txt && apt-get -qq update && \
   apt-get -qq clean && \
   rm -rf /var/lib/apt/lists/*
 
+# setup the bash_calysto kernel. It is only available via pip
+# but not from conda:
+RUN test -f binder/requirements.txt && \
+  pip install --no-cache-dir -r binder/requirements.txt
 
 # Add start script
 # Add entrypoint
 COPY binder/repo2docker-entrypoint /usr/local/bin/repo2docker-entrypoint
 RUN chmod 755 /usr/local/bin/repo2docker-entrypoint
-
-USER ${NB_USER}
-
-# setup the bash_calysto kernel. It is only available via pip
-# but not from conda:
-RUN test -f binder/requirements.txt && \
-  pip install --no-cache-dir -r binder/requirements.txt
 
 # We always want containers to run as non-root
 USER ${NB_USER}
