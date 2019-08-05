@@ -29,10 +29,10 @@ ENV LANGUAGE en_US.UTF-8
 ENV SHELL /bin/bash
 
 # Set up user
-ARG NB_USER
+#ARG NB_USER
+ENV NB_USER thomas
 ARG NB_UID
-#ENV USER ${NB_USER}
-ENV USER thomas
+ENV USER ${NB_USER}
 ENV HOME /home/${NB_USER}
 
 RUN adduser --disabled-password \
